@@ -39,34 +39,34 @@ Write-Host "Clean up various directories"
 Remove-Item $profile.AllUsersAllHosts -Force -ErrorAction SilentlyContinue | Out-Null
 
 # Clean yarn and npm cache
-cmd /c "yarn cache clean 2>&1" | Out-Null
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to clean yarn cache"
-}
+# cmd /c "yarn cache clean 2>&1" | Out-Null
+# if ($LASTEXITCODE -ne 0) {
+#     throw "Failed to clean yarn cache"
+# }
 
-cmd /c "npm cache clean --force 2>&1" | Out-Null
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to clean npm cache"
-}
+# cmd /c "npm cache clean --force 2>&1" | Out-Null
+# if ($LASTEXITCODE -ne 0) {
+#     throw "Failed to clean npm cache"
+# }
 
-if (Test-IsWin25) {
-    $directoriesToCompact = @(
-        "C:\Program Files (x86)\Android",
-        "C:\Program Files\dotnet",
-        "$env:SystemRoot\assembly",
-        "$env:SystemRoot\WinSxS"
-    )
-    Write-Host "Starting Image slimming process"
-    $start = get-date
-    $ErrorActionPreviousValue = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
-    foreach ($directory in $directoriesToCompact) {
-        Write-Host "Compressing '$directory' directory"
-        $compressionResult =  & compact /s:"$directory" /c /a /i /EXE:LZX *
-        $compressionResult | Select-Object -Last 3
-    }
-    $ErrorActionPreference = $ErrorActionPreviousValue
-    $finish = get-date
-    $time = "$(($finish - $start).Minutes):$(($finish - $start).Seconds)"
-    Write-Host "The process took a total of $time (in minutes:seconds)"
-}
+# if (Test-IsWin25) {
+#     $directoriesToCompact = @(
+#         "C:\Program Files (x86)\Android",
+#         "C:\Program Files\dotnet",
+#         "$env:SystemRoot\assembly",
+#         "$env:SystemRoot\WinSxS"
+#     )
+#     Write-Host "Starting Image slimming process"
+#     $start = get-date
+#     $ErrorActionPreviousValue = $ErrorActionPreference
+#     $ErrorActionPreference = 'SilentlyContinue'
+#     foreach ($directory in $directoriesToCompact) {
+#         Write-Host "Compressing '$directory' directory"
+#         $compressionResult =  & compact /s:"$directory" /c /a /i /EXE:LZX *
+#         $compressionResult | Select-Object -Last 3
+#     }
+#     $ErrorActionPreference = $ErrorActionPreviousValue
+#     $finish = get-date
+#     $time = "$(($finish - $start).Minutes):$(($finish - $start).Seconds)"
+#     Write-Host "The process took a total of $time (in minutes:seconds)"
+# }
